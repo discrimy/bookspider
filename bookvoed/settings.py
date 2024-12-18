@@ -1,3 +1,5 @@
+import os
+
 # Scrapy settings for bookvoed project
 #
 # For simplicity, this file contains only settings considered important or
@@ -12,6 +14,9 @@ BOT_NAME = "bookvoed"
 SPIDER_MODULES = ["bookvoed.spiders"]
 NEWSPIDER_MODULE = "bookvoed.spiders"
 
+SCHEDULER = 'scrapy_redis.scheduler.Scheduler'
+DUPEFILTER_CLASS = 'scrapy_redis.dupefilter.RFPDupeFilter'
+REDIS_URL = os.getenv('REDIS_URL')
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = "bookvoed (+http://www.yourdomain.com)"
@@ -64,6 +69,7 @@ DOWNLOAD_DELAY = 3
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
    "bookvoed.pipelines.BookvoedPipeline": 300,
+   'scrapy_redis.pipelines.RedisPipeline': 400,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
